@@ -5,9 +5,13 @@ const cors = require('cors');  // Import cors
 
 const app = express();
 const server = http.createServer(app);
-const io = socketIO(server);
 
-app.use(cors());  // Enable CORS
+// Enable CORS for Socket.IO
+const io = socketIO(server, {
+  cors: {
+    origin: '*',
+  },
+});
 
 app.use(express.static('public'));
 
@@ -16,6 +20,8 @@ io.on('connection', (socket) => {
   
   socket.on('disconnect', () => {
     console.log('User disconnected');
+    // Broadcast to all clients to clear the canvas
+    io.emit('clearCanvas');
   });
 
   socket.on('draw', (data) => {
