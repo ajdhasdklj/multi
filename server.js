@@ -1,10 +1,13 @@
 const express = require('express');
 const http = require('http');
 const socketIO = require('socket.io');
+const cors = require('cors');  // Import cors
 
 const app = express();
 const server = http.createServer(app);
 const io = socketIO(server);
+
+app.use(cors());  // Enable CORS
 
 app.use(express.static('public'));
 
@@ -15,9 +18,7 @@ io.on('connection', (socket) => {
     console.log('User disconnected');
   });
 
-  // Add event listeners for drawing actions
   socket.on('draw', (data) => {
-    // Broadcast the drawing data to all connected clients
     socket.broadcast.emit('draw', data);
   });
 });
