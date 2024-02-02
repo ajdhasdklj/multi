@@ -41,3 +41,8 @@ socket.on('draw', (data) => {
   ctx.lineTo(data.x, data.y);
   ctx.stroke();
 });
+
+// Listen for clearing canvas event from the server
+socket.on('clearCanvas', () => {
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+});
